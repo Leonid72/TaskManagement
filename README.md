@@ -1,72 +1,137 @@
 # Task Management System
 
-A full-stack task management application built with Angular (Client) and .NET Minimal API (Server).
+A full-stack task management application built with **Angular** (Client) and **.NET 9 Minimal API** (Server).
+
+---
+
+## Tech Stack
+
+| | Technology |
+|---|---|
+| **Client** | Angular 18, Bootstrap 5, Bootstrap Icons, Transloco i18n |
+| **Server** | .NET 9 Minimal API, FluentValidation, Swashbuckle |
+| **State** | Angular Signals |
+| **Forms** | Reactive Forms + ControlValueAccessor |
+| **Storage** | JSON file (easily replaceable with any database) |
+
+---
 
 ## Architecture
 
-### Server - Vertical Slice Pattern
-- **Framework**: .NET 9 Minimal API
-- **Data Storage**: JSON file (`tasks.json`)
-- **Pattern**: Vertical Slice Architecture - each feature (GetAllTasks, CreateTask, UpdateTask, DeleteTask) is self-contained
-- **API Response**: Generic `ApiResponse<T>` wrapper with pagination support (`PagedResult<T>`)
+### Server — Vertical Slice Architecture
+Each feature is **fully self-contained** — interface, repository, handler, validator and endpoint live together:
 
-### Client - Modular Architecture
-- **Framework**: Angular 21 (Standalone Components)
-- **UI**: Bootstrap 5 + ngx-toastr notifications
-- **Forms**: Reactive Forms with validation
-- **Structure**: Core (models, services) → Shared (header, footer) → Features (tasks)
-- **RTL**: Full right-to-left Hebrew support
+```
+Features/Tasks/
+├── GetAllTasks.cs   → ITaskRepository, TaskRepository, Handler, Endpoint
+├── CreateTask.cs    → ITaskRepository, TaskRepository, Request, Response, Validator, Handler, Endpoint
+├── UpdateTask.cs    → ITaskRepository, TaskRepository, Request, Response, Validator, Handler, Endpoint
+└── DeleteTask.cs    → ITaskRepository, TaskRepository, Handler, Endpoint
+```
 
-## Prerequisites
+### Client — Feature-based Architecture
+```
+src/app/
+├── core/
+│   ├── models/          # TaskItem, Priority enum, TaskStatus enum
+│   ├── services/        # TaskService, LoggerService
+│   └── interceptors/    # errorInterceptor (global HTTP error handling)
+├── shared/
+│   ├── components/      # SelectDropdownComponent (ControlValueAccessor)
+│   ├── constants/       # PRIORITY_OPTIONS, STATUS_OPTIONS
+│   └── layout/          # Header, Footer
+└── features/tasks/
+    ├── components/      # TaskFormComponent, TaskListComponent
+    └── pages/           # TaskPageComponent
+```
 
+---
+
+## Key Features
+
+- ✅ **Vertical Slice** — each API feature owns its interface, repository and endpoint
+- ✅ **Signals** — reactive state management without RxJS complexity
+- ✅ **ControlValueAccessor** — reusable dropdown integrates with Reactive Forms natively
+- ✅ **Global error handling** — HTTP interceptor catches all errors, shows translated toastr
+- ✅ **i18n** — Transloco with Hebrew (`he.json`) translation file
+- ✅ **Enums** — `Priority` (Low/Medium/High) and `TaskStatus` (Todo/InProgress/Done) on both client and server
+- ✅ **`isSubmitting` signal** — button disabled during HTTP request, spinner shown
+- ✅ **`finalize`** — loading state resets on both success and error
+- ✅ **LoggerService** — environment-aware logging (dev only for log/warn, always for error)
+- ✅ **FluentValidation** — server-side validation
+- ✅ **Swagger UI** — available at `http://localhost:5000`
+- ✅ **RTL** — full right-to-left Hebrew support
+
+---
+
+## Getting Started
+
+### Prerequisites
 - [.NET 9 SDK](https://dotnet.microsoft.com/download)
 - [Node.js 18+](https://nodejs.org/)
-- [Angular CLI](https://angular.dev/) (`npm install -g @angular/cli`)
+- Angular CLI: `npm install -g @angular/cli`
 
-## Running the Server
-
+### Run the Server
 ```bash
 cd TaskManagementServer
 dotnet run --project src/TaskManagementServer.Api
 ```
+Server: `http://localhost:5000`
+Swagger: `http://localhost:5000/index.html`
 
-Server runs at: `http://localhost:5000`
-
-### API Endpoints
-
-| Method | Route | Description |
-|--------|-------|-------------|
-| GET | `/tasks?page=1&pageSize=10` | Get paginated tasks |
-| POST | `/tasks` | Create a new task |
-| PUT | `/tasks/{id}` | Update a task by ID |
-| DELETE | `/tasks/{id}` | Delete a task by ID |
-
-## Running the Client
-
+### Run the Client
 ```bash
 cd TaskManagementClient
 npm install
 ng serve
 ```
+Client: `http://localhost:4200`
 
-Client runs at: `http://localhost:4200`
+---
+
+## API Endpoints
+
+| Method | Route | Description |
+|--------|-------|-------------|
+| `GET` | `/tasks` | Get all tasks |
+| `POST` | `/tasks` | Create a new task |
+| `PUT` | `/tasks/{id}` | Update a task by ID |
+| `DELETE` | `/tasks/{id}` | Delete a task by ID |
+
+### Task Model
+```json
+{
+  "id": 1,
+  "title": "My Task",
+  "description": "Optional description",
+  "priority": "High",
+  "dueDate": "2026-03-20",
+  "status": "InProgress"
+}
+```
+
+**Priority values:** `Low` | `Medium` | `High`
+**Status values:** `Todo` | `InProgress` | `Done`
+
+---
 
 ## Project Structure
 
 ```
 TaskManagmentSystem/
-├── TaskManagementServer/           # .NET Server (Vertical Slice)
+├── TaskManagementServer/
 │   └── src/TaskManagementServer.Api/
-│       ├── Common/                 # ApiResponse, PagedResult
-│       ├── Data/                   # JsonTaskRepository + tasks.json
-│       ├── DTOs/                   # Request/Response DTOs
-│       ├── Features/Tasks/         # Vertical slices (CRUD)
-│       ├── Models/                 # TaskItem entity
-│       └── Program.cs              # App configuration
+│       ├── Common/             # ApiResponse<T> wrapper
+│       ├── Data/               # JsonTaskRepository
+│       ├── Endpoints/          # IEndpoint, EndpointExtensions
+│       ├── Features/Tasks/     # Vertical slices (CRUD)
+│       ├── Middleware/         # GlobalExceptionMiddleware
+│       ├── Models/             # TaskItem, Priority, Status
+│       └── Program.cs
 │
-└── TaskManagementClient/           # Angular Client (Modular)
+└── TaskManagementClient/
     └── src/app/
-        ├── core/                   # Models & Services
-        ├── shared/layout/          # Header & Footer
-        └── features/tasks/         # Task form, list & page
+        ├── core/               # Models, Services, Interceptors
+        ├── shared/             # Reusable components, constants, layout
+        └── features/tasks/     # Task form, list, page
 ```
