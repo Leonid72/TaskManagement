@@ -1,0 +1,86 @@
+{
+  "header": {
+    "title": "ניהול משימות"
+  },
+  "footer": {
+    "copyright": "Task Management System - כל הזכויות שמורות"
+  },
+  "errors": {
+    "title": "שגיאה",
+    "network": "אין חיבור לשרת. בדוק את החיבור לאינטרנט",
+    "badRequest": "הבקשה שגויה. בדוק את הנתונים שהזנת",
+    "notFound": "המשאב המבוקש לא נמצא",
+    "server": "שגיאת שרת פנימית. נסה שוב מאוחר יותר",
+    "unknown": "אירעה שגיאה בלתי צפויה"
+  },
+  "task": {
+    "form": {
+      "addTitle": "הוספת משימה חדשה",
+      "editTitle": "עריכת משימה",
+      "fields": {
+        "title": "כותרת המשימה",
+        "description": "תיאור המשימה",
+        "priority": "עדיפות",
+        "status": "סטטוס",
+        "dueDate": "תאריך יעד"
+      },
+      "placeholders": {
+        "title": "הזן כותרת...",
+        "description": "הזן תיאור..."
+      },
+      "errors": {
+        "titleRequired": "כותרת המשימה היא שדה חובה",
+        "titleMinLength": "כותרת חייבת להכיל לפחות 3 תווים",
+        "priorityRequired": "עדיפות היא שדה חובה",
+        "statusRequired": "סטטוס הוא שדה חובה",
+        "dueDateRequired": "תאריך יעד הוא שדה חובה"
+      },
+      "buttons": {
+        "save": "שמירה",
+        "update": "עדכון",
+        "cancel": "ביטול",
+        "submitting": "שומר..."
+      }
+    },
+    "list": {
+      "title": "רשימת משימות",
+      "tasks": "משימות",
+      "empty": "אין משימות להצגה. הוסף משימה חדשה!",
+      "columns": {
+        "id": "מזהה",
+        "title": "כותרת",
+        "description": "תיאור",
+        "priority": "עדיפות",
+        "status": "סטטוס",
+        "dueDate": "תאריך יעד",
+        "actions": "פעולות"
+      },
+      "actions": {
+        "edit": "עריכה",
+        "delete": "מחיקה"
+      }
+    },
+    "priority": {
+      "Low": "נמוכה",
+      "Medium": "בינונית",
+      "High": "גבוהה"
+    },
+    "status": {
+      "Todo": "ממתינה",
+      "InProgress": "בתהליך",
+      "Done": "הושלמה"
+    },
+    "messages": {
+      "success": "הצלחה",
+      "error": "שגיאה",
+      "addSuccess": "המשימה נוספה בהצלחה",
+      "updateSuccess": "המשימה עודכנה בהצלחה",
+      "deleteSuccess": "המשימה נמחקה בהצלחה",
+      "loadError": "שגיאה בטעינת המשימות",
+      "addError": "שגיאה בהוספת המשימה",
+      "updateError": "שגיאה בעדכון המשימה",
+      "deleteError": "שגיאה במחיקת המשימה",
+      "deleteConfirm": "האם אתה בטוח שברצונך למחוק את המשימה?"
+    }
+  }
+}

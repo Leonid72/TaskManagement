@@ -1,0 +1,71 @@
+<div class="card shadow-sm">
+  <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+    <h5 class="mb-0">
+      <i class="bi bi-list-task me-2"></i>{{ 'task.list.title' | transloco }}
+    </h5>
+    <span class="badge bg-light text-primary rounded-pill">
+      {{ tasks.length }} {{ 'task.list.tasks' | transloco }}
+    </span>
+  </div>
+
+  <div class="card-body p-0">
+    @if (tasks.length === 0) {
+      <div class="text-center text-muted py-5">
+        <i class="bi bi-inbox fs-1 d-block mb-2"></i>
+        <p class="mb-0">{{ 'task.list.empty' | transloco }}</p>
+      </div>
+    } @else {
+      <div class="table-responsive">
+        <table class="table table-hover table-striped align-middle mb-0">
+          <thead class="table-dark">
+            <tr>
+              <th><i class="bi bi-hash me-1"></i>{{ 'task.list.columns.id' | transloco }}</th>
+              <th><i class="bi bi-card-heading me-1"></i>{{ 'task.list.columns.title' | transloco }}</th>
+              <th><i class="bi bi-text-paragraph me-1"></i>{{ 'task.list.columns.description' | transloco }}</th>
+              <th><i class="bi bi-flag me-1"></i>{{ 'task.list.columns.priority' | transloco }}</th>
+              <th><i class="bi bi-circle-half me-1"></i>{{ 'task.list.columns.status' | transloco }}</th>
+              <th><i class="bi bi-calendar me-1"></i>{{ 'task.list.columns.dueDate' | transloco }}</th>
+              <th class="text-center">{{ 'task.list.columns.actions' | transloco }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (task of tasks; track task.id) {
+              <tr>
+                <td class="text-muted">#{{ task.id }}</td>
+                <td class="fw-semibold">{{ task.title }}</td>
+                <td class="text-muted small">{{ task.description || '-' }}</td>
+                <td>
+                  <span class="badge" [ngClass]="getPriorityBadgeClass(task.priority)">
+                    {{ 'task.priority.' + task.priority | transloco }}
+                  </span>
+                </td>
+                <td>
+                  <span class="badge" [ngClass]="getStatusBadgeClass(task.status)">
+                    {{ 'task.status.' + task.status | transloco }}
+                  </span>
+                </td>
+                <td>{{ task.dueDate }}</td>
+                <td class="text-center">
+                  <button
+                    class="btn btn-sm btn-outline-primary me-1"
+                    (click)="onEdit(task)"
+                    [title]="'task.list.actions.edit' | transloco"
+                  >
+                    <i class="bi bi-pencil"></i>
+                  </button>
+                  <button
+                    class="btn btn-sm btn-outline-danger"
+                    (click)="onDelete(task.id)"
+                    [title]="'task.list.actions.delete' | transloco"
+                  >
+                    <i class="bi bi-trash"></i>
+                  </button>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    }
+  </div>
+</div>

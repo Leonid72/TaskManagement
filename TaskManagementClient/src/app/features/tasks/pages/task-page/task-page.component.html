@@ -1,0 +1,23 @@
+<div class="container py-4">
+  <div class="row g-4">
+    <!-- Form Column -->
+    <div class="col-lg-4 col-md-5">
+      <app-task-form
+        [taskToEdit]="taskToEdit"
+        [isSubmitting]="isSubmitting()"
+        (save)="onSaveTask($event)"
+        (update)="onUpdateTask($event)"
+        (cancelEdit)="onCancelEdit()"
+      ></app-task-form>
+    </div>
+
+    <!-- List Column -->
+    <div class="col-lg-8 col-md-7">
+      <app-task-list
+        [tasks]="tasks()"
+        (edit)="onEditTask($event)"
+        (delete)="onDeleteTask($event)"
+      ></app-task-list>
+    </div>
+  </div>
+</div>

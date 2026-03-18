@@ -1,0 +1,17 @@
+/* Global styles */
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f8f9fa;
+  direction: rtl;
+}
+
+/* RTL support for Bootstrap */
+.form-control,
+.form-select {
+  text-align: right;
+}
+
+.table th,
+.table td {
+  text-align: right;
+}

@@ -1,0 +1,116 @@
+<div class="card shadow-sm">
+  <div class="card-header bg-primary text-white">
+    <h5 class="mb-0">
+      <i class="bi {{ isEditMode ? 'bi-pencil-square' : 'bi-plus-circle' }} me-2"></i>
+      {{ (isEditMode ? 'task.form.editTitle' : 'task.form.addTitle') | transloco }}
+    </h5>
+  </div>
+  <div class="card-body">
+    <form [formGroup]="taskForm" (ngSubmit)="onSubmit()">
+
+      <!-- Title -->
+      <div class="mb-3">
+        <label for="title" class="form-label fw-semibold">
+          {{ 'task.form.fields.title' | transloco }} <span class="text-danger">*</span>
+        </label>
+        <input
+          type="text"
+          id="title"
+          class="form-control"
+          formControlName="title"
+          [placeholder]="'task.form.placeholders.title' | transloco"
+          [class.is-invalid]="taskForm.get('title')?.invalid && taskForm.get('title')?.touched"
+        />
+        @if (taskForm.get('title')?.touched) {
+          @if (taskForm.get('title')?.hasError('required')) {
+            <div class="invalid-feedback">{{ 'task.form.errors.titleRequired' | transloco }}</div>
+          } @else if (taskForm.get('title')?.hasError('minlength')) {
+            <div class="invalid-feedback">{{ 'task.form.errors.titleMinLength' | transloco }}</div>
+          }
+        }
+      </div>
+
+      <!-- Description -->
+      <div class="mb-3">
+        <label for="description" class="form-label fw-semibold">
+          {{ 'task.form.fields.description' | transloco }}
+        </label>
+        <textarea
+          id="description"
+          class="form-control"
+          formControlName="description"
+          rows="3"
+          [placeholder]="'task.form.placeholders.description' | transloco"
+        ></textarea>
+      </div>
+
+      <!-- Priority & Status side by side -->
+      <div class="row g-3 mb-3">
+        <div class="col-6">
+          <app-select-dropdown
+            id="priority"
+            [label]="'task.form.fields.priority' | transloco"
+            formControlName="priority"
+            [options]="priorityOptions"
+            [isInvalid]="!!(taskForm.get('priority')?.invalid && taskForm.get('priority')?.touched)"
+            [errorMessage]="'task.form.errors.priorityRequired' | transloco"
+          />
+        </div>
+        <div class="col-6">
+          <app-select-dropdown
+            id="status"
+            [label]="'task.form.fields.status' | transloco"
+            formControlName="status"
+            [options]="statusOptions"
+            [isInvalid]="!!(taskForm.get('status')?.invalid && taskForm.get('status')?.touched)"
+            [errorMessage]="'task.form.errors.statusRequired' | transloco"
+          />
+        </div>
+      </div>
+
+      <!-- Due Date -->
+      <div class="mb-4">
+        <label for="dueDate" class="form-label fw-semibold">
+          {{ 'task.form.fields.dueDate' | transloco }} <span class="text-danger">*</span>
+        </label>
+        <input
+          type="date"
+          id="dueDate"
+          class="form-control"
+          formControlName="dueDate"
+          [class.is-invalid]="taskForm.get('dueDate')?.invalid && taskForm.get('dueDate')?.touched"
+        />
+        @if (taskForm.get('dueDate')?.invalid && taskForm.get('dueDate')?.touched) {
+          <div class="invalid-feedback">{{ 'task.form.errors.dueDateRequired' | transloco }}</div>
+        }
+      </div>
+
+      <!-- Buttons -->
+      <div class="d-grid gap-2">
+        <button
+          type="submit"
+          class="btn btn-primary"
+          [disabled]="taskForm.invalid || isSubmitting"
+        >
+          @if (isSubmitting) {
+            <span class="spinner-border spinner-border-sm me-1"></span>
+          } @else {
+            <i class="bi {{ isEditMode ? 'bi-save' : 'bi-plus-lg' }} me-1"></i>
+          }
+          {{ (isSubmitting
+            ? 'task.form.buttons.submitting'
+            : isEditMode
+              ? 'task.form.buttons.update'
+              : 'task.form.buttons.save') | transloco }}
+        </button>
+        @if (isEditMode) {
+          <button type="button" class="btn btn-outline-secondary" (click)="onCancel()">
+            <i class="bi bi-x-circle me-1"></i>
+            {{ 'task.form.buttons.cancel' | transloco }}
+          </button>
+        }
+      </div>
+
+    </form>
+  </div>
+</div>
