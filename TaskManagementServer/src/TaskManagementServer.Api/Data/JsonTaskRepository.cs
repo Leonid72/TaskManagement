@@ -1,10 +1,13 @@
-using System.Text.Json;
+﻿using System.Text.Json;
 using System.Text.Json.Serialization;
 using TaskManagementServer.Api.Features.Tasks;
 using TaskManagementServer.Api.Models;
 
 namespace TaskManagementServer.Api.Data;
 
+// Replace this with EF Core
+// Make it truly async
+// Add a cache (to avoid reading the file every time)
 public class JsonTaskRepository :
     GetAllTasks.ITaskRepository,
     CreateTask.ITaskRepository,
@@ -15,9 +18,9 @@ public class JsonTaskRepository :
     private readonly object _lock = new();
     private readonly JsonSerializerOptions _jsonOptions = new()
     {
-        WriteIndented = true,
-        PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
-        Converters = { new JsonStringEnumConverter() }
+        WriteIndented = true,       //nice JSON (with indentation)
+        PropertyNamingPolicy = JsonNamingPolicy.CamelCase,      //Title → title
+        Converters = { new JsonStringEnumConverter() }      //enum as string ("High", "Low")
     };
 
     public JsonTaskRepository(IWebHostEnvironment env)
