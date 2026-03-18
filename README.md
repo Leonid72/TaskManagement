@@ -8,7 +8,7 @@ A full-stack task management application built with **Angular** (Client) and **.
 
 | | Technology |
 |---|---|
-| **Client** | Angular 18, Bootstrap 5, Bootstrap Icons, Transloco i18n |
+| **Client** | Angular 21, Bootstrap 5, Bootstrap Icons, Transloco i18n |
 | **Server** | .NET 9 Minimal API, FluentValidation, Swashbuckle |
 | **State** | Angular Signals |
 | **Forms** | Reactive Forms + ControlValueAccessor |
@@ -86,6 +86,16 @@ npm install
 ng serve
 ```
 Client: `http://localhost:4200`
+
+### Dependencies
+| Package | Version |
+|---------|---------|
+| `@angular/core` | ^21.2.0 |
+| `@jsverse/transloco` | ^8.2.1 |
+| `bootstrap` | ^5.3.8 |
+| `bootstrap-icons` | ^1.13.1 |
+| `ngx-toastr` | ^20.0.5 |
+| `rxjs` | ~7.8.0 |
 
 ---
 
